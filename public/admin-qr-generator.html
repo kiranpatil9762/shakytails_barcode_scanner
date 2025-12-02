@@ -292,7 +292,7 @@
                     resultDiv.className = 'result success';
                     resultDiv.innerHTML = '✅ Login successful!';
                     resultDiv.style.display = 'block';
-                    setTimeout(updateUI, 1000);
+                    updateUI();
                 } else {
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = '❌ ' + data.error;

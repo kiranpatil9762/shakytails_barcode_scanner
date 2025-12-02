@@ -325,12 +325,10 @@
                     userToken = data.token;
                     localStorage.setItem('ownerToken', userToken);
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Login successful! Loading dashboard...';
+                    resultDiv.innerHTML = '✅ Login successful!';
                     resultDiv.style.display = 'block';
                     
-                    setTimeout(() => {
-                        loadDashboard();
-                    }, 1000);
+                    loadDashboard();
                 } else {
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = '❌ ' + data.error;
@@ -346,11 +344,24 @@
         // Load Dashboard
         async function loadDashboard() {
             try {
-                // Get user profile
-                const userResponse = await fetch(`${API_BASE}/api/auth/profile`, {
-                    headers: { 'Authorization': `Bearer ${userToken}` }
-                });
-                const userData = await userResponse.json();
+                // Show dashboard immediately
+                document.getElementById('loginCard').classList.add('hidden');
+                document.getElementById('dashboardContent').classList.remove('hidden');
+                
+                // Load user profile and pets in parallel
+                const [userResponse, petsResponse] = await Promise.all([
+                    fetch(`${API_BASE}/api/auth/profile`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    }),
+                    fetch(`${API_BASE}/api/pets/mine`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    })
+                ]);
+                
+                const [userData, petsData] = await Promise.all([
+                    userResponse.json(),
+                    petsResponse.json()
+                ]);
 
                 if (!userData.success) {
                     logout();
@@ -361,19 +372,9 @@
                 document.getElementById('userName').textContent = currentUser.name;
                 document.getElementById('userEmail').textContent = currentUser.email;
 
-                // Get pets
-                const petsResponse = await fetch(`${API_BASE}/api/pets/mine`, {
-                    headers: { 'Authorization': `Bearer ${userToken}` }
-                });
-                const petsData = await petsResponse.json();
-
                 if (petsData.success) {
                     displayPets(petsData.pets);
                 }
-
-                // Show dashboard
-                document.getElementById('loginCard').classList.add('hidden');
-                document.getElementById('dashboardContent').classList.remove('hidden');
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 logout();

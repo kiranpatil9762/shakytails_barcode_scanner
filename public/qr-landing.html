@@ -790,17 +790,13 @@
                     
                     if (petWithThisQR) {
                         // User already has a pet registered with THIS QR code
-                        resultDiv.innerHTML = '✅ Login successful! Loading your pet profile...';
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
+                        resultDiv.innerHTML = '✅ Login successful!';
+                        location.reload();
                     } else {
                         // User doesn't have a pet with THIS QR code - show registration
-                        resultDiv.innerHTML = '✅ Login successful! Now register this QR tag with your pet...';
-                        setTimeout(() => {
-                            document.getElementById('registerCard').classList.add('hidden');
-                            document.getElementById('petRegisterCard').classList.remove('hidden');
-                        }, 1500);
+                        resultDiv.innerHTML = '✅ Login successful!';
+                        document.getElementById('registerCard').classList.add('hidden');
+                        document.getElementById('petRegisterCard').classList.remove('hidden');
                     }
                 } else {
                     resultDiv.className = 'result error';
@@ -844,12 +840,10 @@
 
                 if (data.success) {
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Pet registered successfully! Reloading...';
+                    resultDiv.innerHTML = '✅ Pet registered successfully!';
                     resultDiv.style.display = 'block';
                     
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
+                    location.reload();
                 } else {
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = '❌ ' + data.error;
@@ -1118,12 +1112,10 @@
 
                 if (data.success) {
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Pet profile updated! Reloading...';
+                    resultDiv.innerHTML = '✅ Pet profile updated!';
                     resultDiv.style.display = 'block';
                     
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
+                    location.reload();
                 } else {
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = '❌ ' + data.error;
