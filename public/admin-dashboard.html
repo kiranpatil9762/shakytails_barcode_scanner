@@ -476,12 +476,10 @@
                     adminToken = data.token;
                     localStorage.setItem('adminToken', adminToken);
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Login successful! Loading dashboard...';
+                    resultDiv.innerHTML = '✅ Login successful!';
                     resultDiv.style.display = 'block';
                     
-                    setTimeout(() => {
-                        loadDashboard();
-                    }, 1000);
+                    loadDashboard();
                 } else {
                     resultDiv.className = 'result error';
                     resultDiv.innerHTML = '❌ ' + (data.error || 'Login failed');
@@ -498,16 +496,18 @@
         // Load Dashboard
         async function loadDashboard() {
             try {
-                // Load all data in sequence to ensure pets are loaded
-                await loadUsers();
-                await loadPets();
-                await loadQRCodes();
-                await loadStats();
-
-                // Show dashboard
+                // Show dashboard immediately
                 document.getElementById('loginCard').classList.add('hidden');
                 document.getElementById('dashboardContent').classList.remove('hidden');
                 document.getElementById('adminName').textContent = 'ShakyTails Admin';
+                
+                // Load all data in parallel for faster loading
+                await Promise.all([
+                    loadUsers(),
+                    loadPets(),
+                    loadQRCodes(),
+                    loadStats()
+                ]);
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 
