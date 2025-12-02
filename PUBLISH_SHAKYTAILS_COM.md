@@ -140,7 +140,7 @@ Paste your production .env (update JWT_SECRET and passwords):
 ```env
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails?retryWrites=true&w=majority
 JWT_SECRET=your_new_64_character_secret_here
 JWT_EXPIRE=7d
 JWT_RESET_EXPIRE=10m
@@ -295,7 +295,7 @@ heroku buildpacks:set heroku/nodejs
 
 # Set environment variables
 heroku config:set NODE_ENV=production
-heroku config:set MONGODB_URI="mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails"
+heroku config:set MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails"
 heroku config:set JWT_SECRET="your_new_secret"
 heroku config:set BASE_URL="https://shakytails.com"
 heroku config:set FRONTEND_URL="https://shakytails.com"

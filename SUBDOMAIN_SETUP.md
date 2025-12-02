@@ -40,7 +40,7 @@ NODE_ENV=production
 PORT=5000
 
 # MongoDB
-MONGODB_URI=mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails?retryWrites=true&w=majority
 
 # JWT Secret (paste the one you generated above!)
 JWT_SECRET=paste_your_generated_64_character_secret_here

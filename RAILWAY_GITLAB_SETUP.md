@@ -116,7 +116,7 @@ railway up
 # Set variables via CLI
 railway variables set NODE_ENV=production
 railway variables set PORT=5000
-railway variables set MONGODB_URI="mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails"
+railway variables set MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails"
 # ... set all other variables
 ```
 
@@ -150,7 +150,7 @@ In Render dashboard, add all your .env variables:
 ```
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails
 JWT_SECRET=your_generated_secret
 BASE_URL=https://app.shakytails.com
 FRONTEND_URL=https://app.shakytails.com

@@ -31,7 +31,7 @@ Never store credentials in `.env` file when deploying. Use Railway's environment
 4. Add these variables (copy from your `.env` file):
 
 ```
-MONGODB_URI = mongodb+srv://theshakytails:Shakytails%40123@shakytails.6rnpitz.mongodb.net/shakytails?retryWrites=true&w=majority
+MONGODB_URI = mongodb+srv://<username>:<password>@<cluster>.mongodb.net/shakytails?retryWrites=true&w=majority
 JWT_SECRET = your_super_secret_jwt_key_change_this_in_production
 EMAIL_USER = theshakytails@gmail.com
 EMAIL_PASS = (use app password - see below)
