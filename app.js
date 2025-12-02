@@ -63,9 +63,14 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/qr-inventory', qrInventoryRoutes);
 
-// Root route
+// Main user page - QR scanner and pet registration
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'qr-landing.html'));
+});
+
+// Admin page - Admin dashboard only
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin-dashboard.html'));
 });
 
 // Health check route
