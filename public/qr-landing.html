@@ -947,22 +947,25 @@
                         // Create Google Maps link
                         const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
                         
-                        // Format WhatsApp message
-                        const message = `I found ${petName}!\n\n` +
-                                      `Current Location:\n${mapsLink}\n\n` +
-                                      `Accuracy: approximately ${accuracy} meters\n\n` +
-                                      `Please contact me to arrange pickup.`;
+                        // Format WhatsApp message - simple text only
+                        const message = `I found ${petName}!\n\nCurrent Location:\n${mapsLink}\n\nAccuracy: approximately ${accuracy} meters\n\nPlease contact me to arrange pickup.`;
                         
                         // Clean phone number (remove spaces, dashes, etc.)
                         const cleanPhone = ownerPhone.replace(/[^0-9+]/g, '');
                         
-                        // Open WhatsApp with message
+                        // Open WhatsApp with message - use wa.me for best mobile compatibility
                         const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
-                        window.open(whatsappUrl, '_blank');
                         
-                        // Reset button
+                        // Reset button first
                         button.innerHTML = originalText;
                         button.disabled = false;
+                        
+                        // Open WhatsApp - use location.href on mobile for better compatibility
+                        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            window.location.href = whatsappUrl;
+                        } else {
+                            window.open(whatsappUrl, '_blank');
+                        }
                     },
                     (error) => {
                         // Handle location error
