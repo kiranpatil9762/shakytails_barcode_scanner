@@ -798,16 +798,20 @@
         }
 
         // Generate QR Codes
-        document.getElementById('generateQRForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const resultDiv = document.getElementById('generateResult');
-            const quantity = document.getElementById('qrQuantity').value;
-            const batchNumber = document.getElementById('qrBatchNumber').value;
+        function setupGenerateQRForm() {
+            const form = document.getElementById('generateQRForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const resultDiv = document.getElementById('generateResult');
+                const quantity = document.getElementById('qrQuantity').value;
+                const batchNumber = document.getElementById('qrBatchNumber').value;
 
-            try {
-                resultDiv.innerHTML = '⏳ Generating QR codes...';
-                resultDiv.className = 'result';
-                resultDiv.style.display = 'block';
+                try {
+                    resultDiv.innerHTML = '⏳ Generating QR codes...';
+                    resultDiv.className = 'result';
+                    resultDiv.style.display = 'block';
 
                 const response = await fetch(`${API_BASE}/api/qr-inventory/generate-bulk`, {
                     method: 'POST',
@@ -852,7 +856,8 @@
                 resultDiv.className = 'result error';
                 resultDiv.innerHTML = '❌ Network error: ' + error.message;
             }
-        });
+            });
+        }
 
         // Download single QR code
         function downloadSingleQR(url, filename) {
@@ -901,6 +906,7 @@
 
         // Initialize
         init();
+        setupGenerateQRForm();
     </script>
 </body>
 </html>
