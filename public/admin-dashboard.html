@@ -447,6 +447,7 @@
         let allUsers = [];
         let allPets = [];
         let allQRCodes = [];
+        let autoRefreshInterval = null;
 
         // Check if already logged in
         function init() {
@@ -508,6 +509,9 @@
                     loadQRCodes(),
                     loadStats()
                 ]);
+                
+                // Start auto-refresh every 10 seconds
+                startAutoRefresh();
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 
@@ -793,12 +797,41 @@
 
         // Logout
         function logout() {
+            stopAutoRefresh();
             localStorage.removeItem('adminToken');
             adminToken = null;
             document.getElementById('loginCard').classList.remove('hidden');
             document.getElementById('dashboardContent').classList.add('hidden');
             document.getElementById('adminEmail').value = 'theshakytails@gmail.com';
             document.getElementById('adminPassword').value = '';
+        }
+
+        // Auto-refresh functions
+        function startAutoRefresh() {
+            // Clear any existing interval
+            stopAutoRefresh();
+            
+            // Refresh data every 10 seconds
+            autoRefreshInterval = setInterval(async () => {
+                try {
+                    await Promise.all([
+                        loadUsers(),
+                        loadPets(),
+                        loadQRCodes(),
+                        loadStats()
+                    ]);
+                    console.log('Dashboard auto-refreshed at', new Date().toLocaleTimeString());
+                } catch (error) {
+                    console.error('Auto-refresh error:', error);
+                }
+            }, 10000); // 10 seconds
+        }
+
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
         }
 
         // Generate QR Codes
