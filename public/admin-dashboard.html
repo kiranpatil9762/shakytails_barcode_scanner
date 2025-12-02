@@ -730,16 +730,20 @@
                 return;
             }
 
-            tbody.innerHTML = qrCodes.map(qr => `
+            tbody.innerHTML = qrCodes.map(qr => {
+                const imagePath = qr.qrCodeImage || `/qrcodes/${qr.qrCodeId}.png`;
+                const downloadUrl = `${API_BASE}${imagePath}`;
+                return `
                 <tr>
                     <td><code>${qr.qrCodeId}</code></td>
                     <td><span class="badge ${qr.status === 'available' ? 'success' : 'info'}">${qr.status}</span></td>
                     <td>${qr.batchNumber || '-'}</td>
                     <td>${qr.isAssigned ? (qr.pet?.petName || 'Assigned') : '-'}</td>
                     <td>${new Date(qr.createdAt).toLocaleDateString()}</td>
-                    <td><a href="${API_BASE}${qr.qrCodeImage}" download class="btn" style="padding: 5px 10px; font-size: 0.85rem;">Download</a></td>
+                    <td><button class="btn" onclick="downloadSingleQR('${downloadUrl}', '${qr.qrCodeId}')" style="padding: 5px 10px; font-size: 0.85rem;">Download</button></td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Filter Functions
