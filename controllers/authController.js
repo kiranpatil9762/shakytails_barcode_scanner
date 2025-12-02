@@ -26,16 +26,14 @@ exports.register = async (req, res) => {
       password,
     });
 
-    // Send welcome email
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Welcome to ShakyTails!',
-        html: emailTemplates.welcome(user.name),
-      });
-    } catch (emailError) {
+    // Send welcome email asynchronously (don't wait for it)
+    sendEmail({
+      email: user.email,
+      subject: 'Welcome to ShakyTails!',
+      html: emailTemplates.welcome(user.name),
+    }).catch(emailError => {
       console.error('Failed to send welcome email:', emailError);
-    }
+    });
 
     // Generate token
     const token = user.getSignedJwtToken();

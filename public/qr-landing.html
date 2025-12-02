@@ -723,7 +723,7 @@
                 if (data.success) {
                     userToken = data.token;
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Account created! Checking QR code...';
+                    resultDiv.innerHTML = '✅ Registration successful!';
                     resultDiv.style.display = 'block';
                     
                     // Check if this QR code is already registered
@@ -731,18 +731,12 @@
                     const checkData = await checkResponse.json();
                     
                     if (checkData.success && checkData.pet) {
-                        // QR already registered, show profile
-                        resultDiv.innerHTML = '✅ Account created! Loading pet profile...';
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
+                        // QR already registered, reload to show profile
+                        location.reload();
                     } else {
-                        // QR not registered, go to pet registration
-                        resultDiv.innerHTML = '✅ Account created! Now register your pet...';
-                        setTimeout(() => {
-                            document.getElementById('registerCard').classList.add('hidden');
-                            document.getElementById('petRegisterCard').classList.remove('hidden');
-                        }, 1500);
+                        // QR not registered, show pet registration form immediately
+                        document.getElementById('registerCard').classList.add('hidden');
+                        document.getElementById('petRegisterCard').classList.remove('hidden');
                     }
                 } else {
                     resultDiv.className = 'result error';
@@ -776,7 +770,7 @@
                 if (data.success) {
                     userToken = data.token;
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Login successful! Checking your pets...';
+                    resultDiv.innerHTML = '✅ Login successful!';
                     resultDiv.style.display = 'block';
                     
                     // Check if THIS specific QR code is already registered by THIS user
