@@ -480,6 +480,7 @@
             </div>
             
             <form id="editPetForm" enctype="multipart/form-data">
+                <h3 style="margin-top: 0; color: #667eea;">🐾 Pet Information</h3>
                 <div class="form-group">
                     <label>Upload New Pet Photo (optional)</label>
                     <input type="file" id="editPetImage" accept="image/*" onchange="previewEditImage(this)">
@@ -529,6 +530,25 @@
                     <label>Reward Note</label>
                     <textarea id="editPetReward"></textarea>
                 </div>
+
+                <h3 style="color: #667eea; margin-top: 30px;">👤 Owner Information</h3>
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="editOwnerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editOwnerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editOwnerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Address *</label>
+                    <input type="text" id="editOwnerAddress" required placeholder="Full address for pet return">
+                </div>
+
                 <button type="submit" class="btn">Update Profile</button>
                 <button type="button" class="btn btn-secondary" onclick="logoutOwner()">Logout</button>
             </form>
@@ -1060,6 +1080,12 @@
                     document.getElementById('editPetAllergies').value = data.pet.allergies || '';
                     document.getElementById('editPetReward').value = data.pet.rewardNote || '';
 
+                    // Populate owner fields
+                    document.getElementById('editOwnerName').value = data.owner.name || '';
+                    document.getElementById('editOwnerPhone').value = data.owner.phone || '';
+                    document.getElementById('editOwnerEmail').value = data.owner.email || '';
+                    document.getElementById('editOwnerAddress').value = data.owner.address || '';
+
                     document.getElementById('ownerLoginCard').classList.add('hidden');
                     document.getElementById('ownerEditCard').classList.remove('hidden');
                 }
@@ -1103,7 +1129,8 @@
                     formData.append('image', imageFile); // Field name must be 'image' for multer
                 }
 
-                const response = await fetch(`${API_BASE}/api/pets/update/${currentPet._id}`, {
+                // Update pet information
+                const petResponse = await fetch(`${API_BASE}/api/pets/update/${currentPet._id}`, {
                     method: 'PUT',
                     headers: { 
                         'Authorization': `Bearer ${userToken}`
@@ -1111,17 +1138,41 @@
                     body: formData
                 });
 
-                const data = await response.json();
+                const petData = await petResponse.json();
 
-                if (data.success) {
+                if (!petData.success) {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = '❌ ' + petData.error;
+                    resultDiv.style.display = 'block';
+                    return;
+                }
+
+                // Update owner information
+                const ownerResponse = await fetch(`${API_BASE}/api/auth/update`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userToken}`
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('editOwnerName').value,
+                        phone: document.getElementById('editOwnerPhone').value,
+                        email: document.getElementById('editOwnerEmail').value,
+                        address: document.getElementById('editOwnerAddress').value
+                    })
+                });
+
+                const ownerData = await ownerResponse.json();
+
+                if (ownerData.success) {
                     resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Pet profile updated!';
+                    resultDiv.innerHTML = '✅ Profile updated successfully!';
                     resultDiv.style.display = 'block';
                     
                     location.reload();
                 } else {
                     resultDiv.className = 'result error';
-                    resultDiv.innerHTML = '❌ ' + data.error;
+                    resultDiv.innerHTML = '❌ ' + ownerData.error;
                     resultDiv.style.display = 'block';
                 }
             } catch (error) {

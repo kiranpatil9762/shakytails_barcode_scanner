@@ -241,11 +241,13 @@ exports.resetPassword = async (req, res) => {
 // @access  Private
 exports.updateUser = async (req, res) => {
   try {
-    const { name, phone } = req.body;
+    const { name, phone, email, address } = req.body;
 
     const fieldsToUpdate = {};
     if (name) fieldsToUpdate.name = name;
     if (phone) fieldsToUpdate.phone = phone;
+    if (email) fieldsToUpdate.email = email;
+    if (address) fieldsToUpdate.address = address;
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
       new: true,
