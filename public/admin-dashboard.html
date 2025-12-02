@@ -833,7 +833,9 @@
                     qrGrid.innerHTML = '';
                     
                     data.qrCodes.forEach(qr => {
-                        const downloadUrl = qr.downloadUrl.startsWith('http') ? qr.downloadUrl : `${API_BASE}${qr.qrCodeImage}`;
+                        // Always use API_BASE for images
+                        const imagePath = qr.qrCodeImage || `/qrcodes/${qr.qrCodeId}.png`;
+                        const downloadUrl = `${API_BASE}${imagePath}`;
                         const qrItem = document.createElement('div');
                         qrItem.style.cssText = 'background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;';
                         qrItem.innerHTML = `
