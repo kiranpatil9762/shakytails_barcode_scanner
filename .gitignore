@@ -5,3 +5,5 @@ public/qrcodes/
 *.log
 .DS_Store
 .vscode/
+password/
+*.txt

@@ -60,7 +60,7 @@ FRONTEND_URL=https://app.shakytails.com
 
 # Admin Credentials
 ADMIN_EMAIL=theshakytails@gmail.com
-ADMIN_PASSWORD=Shakytails@123
+ADMIN_PASSWORD=your_secure_admin_password
 
 # Rate Limiting (optional)
 RATE_LIMIT_WINDOW_MS=900000
@@ -137,7 +137,7 @@ Visit: https://app.shakytails.com/admin-dashboard.html
 
 Login with:
 - Email: theshakytails@gmail.com
-- Password: Shakytails@123
+- Password: [Your Admin Password]
 
 ### 4.4 Test QR Generator
 Visit: https://app.shakytails.com/admin-qr-generator.html

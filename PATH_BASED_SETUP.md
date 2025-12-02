@@ -49,7 +49,7 @@ FRONTEND_URL=https://shakytails.com
 
 # Admin
 ADMIN_EMAIL=theshakytails@gmail.com
-ADMIN_PASSWORD=Shakytails@123
+ADMIN_PASSWORD=your_secure_admin_password
 ```
 
 **Railway gives you a URL like:** `shakytails-production.up.railway.app`

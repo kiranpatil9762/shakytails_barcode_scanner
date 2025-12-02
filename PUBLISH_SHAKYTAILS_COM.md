@@ -26,7 +26,7 @@ EMAIL_FROM=ShakyTails <theshakytails@gmail.com>
 BASE_URL=https://shakytails.com
 FRONTEND_URL=https://shakytails.com
 ADMIN_EMAIL=theshakytails@gmail.com
-ADMIN_PASSWORD=Shakytails@123
+ADMIN_PASSWORD=your_secure_admin_password
 ```
 
 ### Step 3: Get Railway Domain
@@ -152,7 +152,7 @@ EMAIL_FROM=ShakyTails <theshakytails@gmail.com>
 BASE_URL=https://shakytails.com
 FRONTEND_URL=https://shakytails.com
 ADMIN_EMAIL=theshakytails@gmail.com
-ADMIN_PASSWORD=Shakytails@123
+ADMIN_PASSWORD=your_secure_admin_password
 ```
 
 ### Step 5: Start with PM2
@@ -328,7 +328,7 @@ Should return: "Welcome to ShakyTails API"
 
 ### 2. Test Admin Dashboard
 Visit: https://shakytails.com/admin-dashboard.html
-Login with: theshakytails@gmail.com / Shakytails@123
+Login with: theshakytails@gmail.com / [Your Admin Password]
 
 ### 3. Test QR Generator
 Visit: https://shakytails.com/admin-qr-generator.html

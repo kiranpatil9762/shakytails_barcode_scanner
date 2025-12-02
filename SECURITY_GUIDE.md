@@ -36,7 +36,7 @@ JWT_SECRET = your_super_secret_jwt_key_change_this_in_production
 EMAIL_USER = theshakytails@gmail.com
 EMAIL_PASS = (use app password - see below)
 ADMIN_EMAIL = theshakytails@gmail.com
-ADMIN_PASSWORD = Shakytails@123
+ADMIN_PASSWORD = your_secure_admin_password
 BASE_URL = https://web-production-d424.up.railway.app
 NODE_ENV = production
 ```
@@ -44,7 +44,7 @@ NODE_ENV = production
 5. Click **Redeploy** after adding variables
 
 ### 2. **Create Gmail App Password** (HIGH PRIORITY)
-Current password `shakytails@123` is your regular Gmail password - NOT secure!
+Your current email password is insecure (regular Gmail password instead of App Password).
 
 **Steps:**
 1. Go to https://myaccount.google.com/security

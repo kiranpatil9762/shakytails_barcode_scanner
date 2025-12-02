@@ -11,7 +11,7 @@ The ShakyTails system now supports **pre-generated QR codes** that can be produc
 1. Navigate to: **http://localhost:5000/admin-qr-generator.html**
 2. Login with admin credentials:
    - Email: `theshakytails@gmail.com`
-   - Password: `Shakytails@123`
+   - Password: `[Your Admin Password]`
 3. Enter quantity (1-1000) and optional batch number
 4. Click "Generate QR Codes"
 5. Download all QR code images

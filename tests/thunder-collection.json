@@ -194,7 +194,7 @@
       ],
       "body": {
         "type": "json",
-        "raw": "{\n  \"email\": \"theshakytails@gmail.com\",\n  \"password\": \"Shakytails@123\"\n}"
+        "raw": "{\n  \"email\": \"theshakytails@gmail.com\",\n  \"password\": \"your_admin_password\"\n}"
       },
       "tests": []
     },
