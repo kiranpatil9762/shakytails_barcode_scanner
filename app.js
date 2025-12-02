@@ -43,9 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use('/qrcodes', express.static(path.join(__dirname, 'public/qrcodes')));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
-
-// Serve QR system under /qr path
-app.use('/qr', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -67,24 +65,6 @@ app.use('/api/qr-inventory', qrInventoryRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Welcome to ShakyTails API',
-    version: '1.0.0',
-    qrSystem: '/qr',
-    endpoints: {
-      auth: '/api/auth',
-      pets: '/api/pets',
-      qr: '/api/qr',
-      reminders: '/api/reminders',
-      admin: '/api/admin',
-      public: '/api/public',
-    },
-  });
-});
-
-// QR System landing page
-app.get('/qr', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'qr-landing.html'));
 });
 
