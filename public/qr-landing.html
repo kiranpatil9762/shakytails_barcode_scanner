@@ -1237,6 +1237,11 @@
             const resultDiv = document.getElementById('forgotResult');
             const email = document.getElementById('forgotEmail').value;
 
+            // Show loading state
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Sending reset link...';
+            resultDiv.style.display = 'block';
+
             try {
                 const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
                     method: 'POST',
@@ -1260,6 +1265,7 @@
                     resultDiv.style.display = 'block';
                 }
             } catch (error) {
+                console.error('Forgot password error:', error);
                 resultDiv.className = 'result error';
                 resultDiv.innerHTML = '❌ Network error: ' + error.message;
                 resultDiv.style.display = 'block';
