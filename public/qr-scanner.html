@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner - ShakyTails</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .pet-profile {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .pet-profile.show {
+            display: block;
+        }
+
+        .pet-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin: 20px auto;
+            display: block;
+            border: 4px solid #667eea;
+        }
+
+        .pet-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .pet-info h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .lost-banner {
+            background: #dc3545;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .found-banner {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .contact-info {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .contact-info h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .report-form {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 QR Code Scanner</h1>
+            <p>Enter QR Code ID to view pet profile</p>
+        </div>
+
+        <div class="card">
+            <h2>Scan Pet Profile</h2>
+            <div class="form-group">
+                <label>Enter QR Code ID</label>
+                <input type="text" id="qrCodeId" placeholder="e.g., a1b2c3d4">
+            </div>
+            <button onclick="loadPetProfile()" class="btn">View Pet Profile</button>
+
+            <div id="petProfile" class="pet-profile">
+                <div id="lostBanner" class="lost-banner" style="display: none;">
+                    🚨 THIS PET IS LOST! 🚨<br>
+                    Please contact the owner immediately!
+                </div>
+
+                <div id="petInfo"></div>
+
+                <div class="contact-info">
+                    <h3>📞 Contact Owner</h3>
+                    <div id="ownerInfo"></div>
+                </div>
+
+                <div class="report-form" id="reportForm" style="display: none;">
+                    <h3>🎉 Found This Pet? Report Here!</h3>
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="finderName" placeholder="John Finder">
+                    </div>
+                    <div class="form-group">
+                        <label>Your Phone</label>
+                        <input type="tel" id="finderPhone" placeholder="1234567890" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Email (optional)</label>
+                        <input type="email" id="finderEmail" placeholder="finder@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Where did you find the pet?</label>
+                        <input type="text" id="findLocation" placeholder="Central Park, New York" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message to Owner</label>
+                        <textarea id="finderMessage" rows="4" placeholder="Found your pet! He/She is safe with me..."></textarea>
+                    </div>
+                    <button onclick="reportFound()" class="btn">Submit Found Report</button>
+                    <div id="reportSuccess" class="success-message"></div>
+                    <div id="reportError" class="error-message"></div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        let currentQRCodeId = '';
+
+        async function loadPetProfile() {
+            const qrCodeId = document.getElementById('qrCodeId').value.trim();
+            const profileDiv = document.getElementById('petProfile');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (!qrCodeId) {
+                errorDiv.textContent = 'Please enter a QR Code ID';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            currentQRCodeId = qrCodeId;
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/public/pet/${qrCodeId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayPetProfile(data.pet);
+                    profileDiv.classList.add('show');
+                } else {
+                    errorDiv.textContent = 'Pet not found. Please check the QR Code ID.';
+                    errorDiv.style.display = 'block';
+                    profileDiv.classList.remove('show');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error loading pet profile: ' + error.message;
+                errorDiv.style.display = 'block';
+                profileDiv.classList.remove('show');
+            }
+        }
+
+        function displayPetProfile(pet) {
+            const lostBanner = document.getElementById('lostBanner');
+            const petInfoDiv = document.getElementById('petInfo');
+            const ownerInfoDiv = document.getElementById('ownerInfo');
+            const reportForm = document.getElementById('reportForm');
+
+            // Show lost banner if pet is lost
+            if (pet.isLost) {
+                lostBanner.style.display = 'block';
+                reportForm.style.display = 'block';
+            } else {
+                lostBanner.style.display = 'none';
+                reportForm.style.display = 'none';
+            }
+
+            // Display pet info
+            petInfoDiv.innerHTML = `
+                ${pet.profileImage ? `<img src="${API_BASE}${pet.profileImage}" alt="${pet.petName}" class="pet-image">` : ''}
+                <div class="pet-info">
+                    <h3>🐾 ${pet.petName}</h3>
+                    <div class="info-row">
+                        <span class="info-label">Type:</span>
+                        <span class="info-value">${pet.type}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Breed:</span>
+                        <span class="info-value">${pet.breed || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Age:</span>
+                        <span class="info-value">${pet.age || 'N/A'} years</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Gender:</span>
+                        <span class="info-value">${pet.gender || 'N/A'}</span>
+                    </div>
+                    ${pet.isLost && pet.lastKnownLocation ? `
+                        <div class="info-row">
+                            <span class="info-label">Last Known Location:</span>
+                            <span class="info-value">${pet.lastKnownLocation}</span>
+                        </div>
+                    ` : ''}
+                    ${pet.rewardNote ? `
+                        <div class="info-row">
+                            <span class="info-label">Reward:</span>
+                            <span class="info-value">${pet.rewardNote}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Display owner contact info
+            ownerInfoDiv.innerHTML = `
+                <div class="info-row">
+                    <span class="info-label">Owner Name:</span>
+                    <span class="info-value">${pet.owner.name}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Phone:</span>
+                    <span class="info-value"><a href="tel:${pet.owner.phone}">${pet.owner.phone}</a></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value"><a href="mailto:${pet.owner.email}">${pet.owner.email}</a></span>
+                </div>
+            `;
+        }
+
+        async function reportFound() {
+            const successDiv = document.getElementById('reportSuccess');
+            const errorDiv = document.getElementById('reportError');
+            
+            const finderPhone = document.getElementById('finderPhone').value.trim();
+            const location = document.getElementById('findLocation').value.trim();
+
+            if (!finderPhone || !location) {
+                errorDiv.textContent = 'Please fill in phone number and location';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/public/pet/found/${currentQRCodeId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        finderName: document.getElementById('finderName').value,
+                        finderPhone: finderPhone,
+                        finderEmail: document.getElementById('finderEmail').value,
+                        location: location,
+                        message: document.getElementById('finderMessage').value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    successDiv.innerHTML = `
+                        <strong>✅ Thank you!</strong><br>
+                        The owner has been notified via email. They will contact you shortly!
+                    `;
+                    successDiv.style.display = 'block';
+                    errorDiv.style.display = 'none';
+                    
+                    // Clear form
+                    document.getElementById('finderName').value = '';
+                    document.getElementById('finderPhone').value = '';
+                    document.getElementById('finderEmail').value = '';
+                    document.getElementById('findLocation').value = '';
+                    document.getElementById('finderMessage').value = '';
+                } else {
+                    errorDiv.textContent = 'Error submitting report: ' + (data.error || 'Unknown error');
+                    errorDiv.style.display = 'block';
+                    successDiv.style.display = 'none';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Network error: ' + error.message;
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            }
+        }
+
+        // Allow Enter key to load profile
+        document.getElementById('qrCodeId').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loadPetProfile();
+            }
+        });
+    </script>
+</body>
+</html>

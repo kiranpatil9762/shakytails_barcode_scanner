@@ -1,0 +1,215 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "ShakyTails API Tests",
+  "collectionId": "shakytails-tests",
+  "dateExported": "2025-12-01",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "name": "1. Health Check",
+      "method": "GET",
+      "url": "http://localhost:5000/health",
+      "headers": [],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "2. Register User",
+      "method": "POST",
+      "url": "http://localhost:5000/api/auth/register",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@shakytails.com\",\n  \"phone\": \"1234567890\",\n  \"password\": \"password123\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "3. Login User",
+      "method": "POST",
+      "url": "http://localhost:5000/api/auth/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"john@shakytails.com\",\n  \"password\": \"password123\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "4. Get Current User",
+      "method": "GET",
+      "url": "http://localhost:5000/api/auth/me",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "5. Create Pet Profile",
+      "method": "POST",
+      "url": "http://localhost:5000/api/pets/create",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"petName\": \"Buddy\",\n  \"type\": \"dog\",\n  \"breed\": \"Golden Retriever\",\n  \"age\": 3,\n  \"gender\": \"male\",\n  \"medicalHistory\": \"Up to date on all vaccinations\",\n  \"allergies\": \"None\",\n  \"rewardNote\": \"$100 reward if found\",\n  \"emergencyContacts\": [\n    {\n      \"name\": \"Jane Doe\",\n      \"phone\": \"9876543210\",\n      \"relation\": \"Family\"\n    }\n  ]\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "6. Get My Pets",
+      "method": "GET",
+      "url": "http://localhost:5000/api/pets/mine",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "7. Generate QR Code",
+      "method": "GET",
+      "url": "http://localhost:5000/api/qr/generate/PET_ID_HERE",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "8. Get Public Pet Profile",
+      "method": "GET",
+      "url": "http://localhost:5000/api/public/pet/QR_CODE_ID_HERE",
+      "headers": [],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "9. Mark Pet as Lost",
+      "method": "PUT",
+      "url": "http://localhost:5000/api/pets/lost/PET_ID_HERE",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"lastKnownLocation\": \"Central Park, New York\",\n  \"rewardNote\": \"$200 reward for safe return\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "10. Report Found Pet",
+      "method": "POST",
+      "url": "http://localhost:5000/api/public/pet/found/QR_CODE_ID_HERE",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"finderName\": \"Sarah Finder\",\n  \"finderPhone\": \"5555555555\",\n  \"finderEmail\": \"finder@example.com\",\n  \"location\": \"Brooklyn Bridge\",\n  \"message\": \"Found your dog! He's safe with me.\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "11. Add Vaccination Record",
+      "method": "POST",
+      "url": "http://localhost:5000/api/pets/PET_ID_HERE/vaccination",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"vaccineName\": \"Rabies\",\n  \"date\": \"2025-12-01\",\n  \"nextDueDate\": \"2026-12-01\",\n  \"veterinarian\": \"Dr. Smith\",\n  \"notes\": \"Annual rabies vaccine\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "12. Get Pet Statistics",
+      "method": "GET",
+      "url": "http://localhost:5000/api/pets/PET_ID_HERE/stats",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer YOUR_TOKEN_HERE"
+        }
+      ],
+      "body": {},
+      "tests": []
+    },
+    {
+      "name": "13. Admin Login",
+      "method": "POST",
+      "url": "http://localhost:5000/api/admin/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"theshakytails@gmail.com\",\n  \"password\": \"Shakytails@123\"\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "14. Get Admin Stats",
+      "method": "GET",
+      "url": "http://localhost:5000/api/admin/stats",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer ADMIN_TOKEN_HERE"
+        }
+      ],
+      "body": {},
+      "tests": []
+    }
+  ]
+}

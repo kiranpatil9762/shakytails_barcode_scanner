@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test New QR Workflow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #667eea;
+        }
+        .step {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 5px;
+            font-weight: 600;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 2px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎉 New QR Workflow is Ready!</h1>
+        <p><strong>Your QR codes now work like this:</strong></p>
+        
+        <div class="highlight">
+            <strong>✅ Scan QR → Everything happens on ONE page!</strong><br>
+            • First time: Register directly<br>
+            • Already registered: View pet profile<br>
+            • Owner: Login and update anytime
+        </div>
+
+        <h2>📋 Testing Steps</h2>
+        
+        <div class="step">
+            <strong>Step 1: Generate QR Codes (Admin)</strong>
+            <p>Login as admin and generate some QR codes</p>
+            <a href="/admin-qr-generator.html" class="btn" target="_blank">Open Admin Panel</a>
+            <p style="margin-top: 10px;">
+                <strong>Admin Login:</strong><br>
+                Email: <code>theshakytails@gmail.com</code><br>
+                Password: <code>Shakytails@123</code>
+            </p>
+        </div>
+
+        <div class="step">
+            <strong>Step 2: Access QR Landing Page</strong>
+            <p>You can access the QR landing page in three ways:</p>
+            <ol>
+                <li><strong>Scan QR code</strong> - Use phone camera to scan generated QR</li>
+                <li><strong>Direct URL</strong> - Visit with QR ID: <code>/qr-landing.html?qr=YOUR-QR-ID</code></li>
+                <li><strong>Manual entry</strong> - Visit landing page and enter/scan QR code</li>
+            </ol>
+            <a href="/qr-landing.html" class="btn" target="_blank">Open QR Landing Page</a>
+        </div>
+
+        <div class="step">
+            <strong>Step 3: Test Unregistered QR Code</strong>
+            <p>Click below to see what a customer sees when they scan a NEW QR code</p>
+            <a href="/qr-landing.html?qr=TEST-QR-123456" class="btn" target="_blank">Test Unregistered QR</a>
+            <p style="margin-top: 10px;">
+                <small>This will show registration form since this QR is not in the database</small>
+            </p>
+        </div>
+
+        <div class="step">
+            <strong>Step 5: View Registered Pet</strong>
+            <p>After generating QR codes in admin panel, use one of the real QR code IDs</p>
+            <ol>
+                <li>Generate QR codes in admin panel</li>
+                <li>Copy a QR code ID (e.g., <code>abc123def456</code>)</li>
+                <li>Visit: <code>http://localhost:5000/qr-landing.html?qr=YOUR-QR-ID</code></li>
+                <li>Sign up and register your pet</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <strong>Step 4: View Registered Pet</strong>
+            <p>Scan the same QR code again (or refresh the page)</p>
+            <p>You'll now see the complete pet profile with owner contact info!</p>
+        </div>
+
+        <div class="step">
+            <strong>Step 6: Owner Login & Update</strong>
+            <p>From the pet profile page:</p>
+            <ol>
+                <li>Click "Owner Login" button</li>
+                <li>Enter your email and password</li>
+                <li>Update pet information</li>
+                <li>Changes are saved immediately!</li>
+            </ol>
+        </div>
+
+        <h2>🔗 Important Links</h2>
+        <a href="/qr-landing.html" class="btn" target="_blank">QR Landing Page (Enter/Scan)</a>
+        <a href="/owner-dashboard.html" class="btn" target="_blank">Owner Dashboard</a>
+        <a href="/admin-dashboard.html" class="btn" target="_blank">Admin Dashboard</a>
+        <a href="/admin-qr-generator.html" class="btn" target="_blank">Admin QR Generator</a>
+        <a href="/test-dashboard.html" class="btn" target="_blank">Test Dashboard</a>
+        <a href="/mobile.html" class="btn" target="_blank">Mobile Scanner</a>
+        
+        <h2>📱 How The System Works</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Who</th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Action</th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What They See</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>New Customer</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Scans QR code</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Registration form → Create account → Register pet → Done!</td>
+            </tr>
+            <tr style="background: #f8f9fa;">
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Finder</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Scans QR code</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Pet profile with owner contact (Call/Email buttons)</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Pet Owner</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Scans QR code</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Pet profile → "Owner Login" → Edit information</td>
+            </tr>
+            <tr style="background: #f8f9fa;">
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>You (Admin)</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Visit admin dashboard</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">All users, pets, QR codes, statistics</td>
+            </tr>
+        </table>
+
+        <div class="highlight" style="margin-top: 30px;">
+            <strong>🎯 Key Benefits:</strong><br>
+            ✅ No need to visit separate website<br>
+            ✅ Everything on one page<br>
+            ✅ Works on any phone without app<br>
+            ✅ Instant pet registration<br>
+            ✅ Fast lost pet recovery<br>
+            ✅ Easy owner updates
+        </div>
+
+        <h2>📄 Documentation</h2>
+        <p>For complete details, see:</p>
+        <ul>
+            <li><code>NEW_QR_WORKFLOW.md</code> - Complete workflow guide</li>
+            <li><code>QR_WORKFLOW_GUIDE.md</code> - Original inventory system guide</li>
+            <li><code>README.md</code> - Full project documentation</li>
+        </ul>
+    </div>
+
+    <div class="card" style="background: #e8f5e9; border: 2px solid #4caf50;">
+        <h2>✅ System Status</h2>
+        <p><strong>Server:</strong> Running at <code>http://localhost:5000</code></p>
+        <p><strong>Database:</strong> MongoDB Atlas Connected</p>
+        <p><strong>QR Landing Page:</strong> <code>/qr-landing.html?qr=YOUR-QR-ID</code></p>
+        <p><strong>Admin Panel:</strong> <code>/admin-qr-generator.html</code></p>
+        <p style="margin-top: 20px; font-size: 1.2em;">
+            <strong>🎉 Everything is ready to test!</strong>
+        </p>
+    </div>
+</body>
+</html>
