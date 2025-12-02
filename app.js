@@ -15,15 +15,27 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
-// Rate limiting
+// Rate limiting for general API routes
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 200, // Increased to 200 requests per 15 minutes
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
-// Apply rate limiter to API routes only
-app.use('/api/', limiter);
+// More lenient rate limiting for public QR scanning
+const publicLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 100, // 100 requests per 5 minutes - allows frequent QR scans
+  message: 'Too many QR scans from this IP, please try again in a few minutes.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply rate limiters
+app.use('/api/public/', publicLimiter); // More lenient for public QR scanning
+app.use('/api/', limiter); // General rate limit for other API routes
 
 // Compression middleware
 app.use(compression());
