@@ -1,11 +1,41 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const compression = require('compression');
+const morgan = require('morgan');
 
 // Initialize app
 const app = express();
 
-// Middleware
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow inline scripts for frontend
+  crossOriginEmbedderPolicy: false
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000, // 15 minutes
+  max: process.env.RATE_LIMIT_MAX_REQUESTS || 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+
+// Apply rate limiter to API routes only
+app.use('/api/', limiter);
+
+// Compression middleware
+app.use(compression());
+
+// Logging middleware (only in development)
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined')); // Production logging
+}
+
+// CORS middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
