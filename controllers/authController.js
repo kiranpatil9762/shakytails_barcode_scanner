@@ -161,28 +161,21 @@ exports.forgotPassword = async (req, res) => {
     // Create reset url
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Password Reset Request',
-        html: emailTemplates.resetPassword(resetUrl),
-      });
+    // Send response immediately, don't wait for email
+    res.status(200).json({
+      success: true,
+      message: 'Password reset email sent',
+    });
 
-      res.status(200).json({
-        success: true,
-        message: 'Password reset email sent',
-      });
-    } catch (emailError) {
-      console.error('Email send error:', emailError);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save({ validateBeforeSave: false });
-
-      return res.status(500).json({
-        success: false,
-        error: 'Email could not be sent',
-      });
-    }
+    // Send email in background (don't block response)
+    sendEmail({
+      email: user.email,
+      subject: 'Password Reset Request',
+      html: emailTemplates.resetPassword(resetUrl),
+    }).catch(emailError => {
+      console.error('Failed to send password reset email:', emailError);
+      // Reset token remains valid even if email fails
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

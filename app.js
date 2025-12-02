@@ -15,27 +15,32 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
-// Rate limiting for general API routes
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 200, // Increased to 200 requests per 15 minutes
+// Rate limiting - very lenient for production use
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 500, // 500 requests per 15 minutes
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-// More lenient rate limiting for public QR scanning
-const publicLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 100, // 100 requests per 5 minutes - allows frequent QR scans
-  message: 'Too many QR scans from this IP, please try again in a few minutes.',
+// Extra lenient for auth (login, register, forgot password)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // 50 login attempts per 15 minutes
+  message: 'Too many authentication attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-// Apply rate limiters
-app.use('/api/public/', publicLimiter); // More lenient for public QR scanning
-app.use('/api/', limiter); // General rate limit for other API routes
+// Very lenient for public QR scanning
+const publicLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 200, // 200 requests per 5 minutes
+  message: 'Too many QR scans from this IP, please try again in a few minutes.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Compression middleware
 app.use(compression());
@@ -66,14 +71,14 @@ const adminRoutes = require('./routes/adminRoutes');
 const publicRoutes = require('./routes/publicRoutes');
 const qrInventoryRoutes = require('./routes/qrInventoryRoutes');
 
-// Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/pets', petRoutes);
-app.use('/api/qr', qrRoutes);
-app.use('/api/reminders', reminderRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/public', publicRoutes);
-app.use('/api/qr-inventory', qrInventoryRoutes);
+// Apply rate limiters to specific routes (order matters - specific before general)
+app.use('/api/public', publicLimiter, publicRoutes); // Very lenient for QR scanning
+app.use('/api/auth', authLimiter, authRoutes); // Lenient for auth operations
+app.use('/api/pets', generalLimiter, petRoutes);
+app.use('/api/qr', generalLimiter, qrRoutes);
+app.use('/api/reminders', generalLimiter, reminderRoutes);
+app.use('/api/admin', generalLimiter, adminRoutes);
+app.use('/api/qr-inventory', generalLimiter, qrInventoryRoutes);
 
 // Main user page - QR scanner and pet registration
 app.get('/', (req, res) => {
