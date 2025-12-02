@@ -752,32 +752,53 @@
 
         // Filter Functions
         function filterUsers() {
-            const search = document.getElementById('userSearch').value.toLowerCase();
-            const filtered = allUsers.filter(user => 
-                user.name.toLowerCase().includes(search) ||
-                user.email.toLowerCase().includes(search) ||
-                (user.phone && user.phone.includes(search))
-            );
-            displayUsers(filtered);
+            try {
+                const search = document.getElementById('userSearch').value.toLowerCase();
+                const filtered = allUsers.filter(user => {
+                    if (!user) return false;
+                    const name = (user.name || '').toLowerCase();
+                    const email = (user.email || '').toLowerCase();
+                    const phone = (user.phone || '').toLowerCase();
+                    return name.includes(search) || email.includes(search) || phone.includes(search);
+                });
+                displayUsers(filtered);
+            } catch (error) {
+                console.error('Error filtering users:', error);
+                displayUsers(allUsers);
+            }
         }
 
         function filterPets() {
-            const search = document.getElementById('petSearch').value.toLowerCase();
-            const filtered = allPets.filter(pet => 
-                pet.petName.toLowerCase().includes(search) ||
-                (pet.owner?.name && pet.owner.name.toLowerCase().includes(search)) ||
-                (pet.qrCode && pet.qrCode.toLowerCase().includes(search))
-            );
-            displayPets(filtered);
+            try {
+                const search = document.getElementById('petSearch').value.toLowerCase();
+                const filtered = allPets.filter(pet => {
+                    if (!pet) return false;
+                    const petName = (pet.petName || '').toLowerCase();
+                    const ownerName = (pet.owner?.name || '').toLowerCase();
+                    const qrCode = (pet.qrCode || '').toLowerCase();
+                    return petName.includes(search) || ownerName.includes(search) || qrCode.includes(search);
+                });
+                displayPets(filtered);
+            } catch (error) {
+                console.error('Error filtering pets:', error);
+                displayPets(allPets);
+            }
         }
 
         function filterQRCodes() {
-            const search = document.getElementById('qrSearch').value.toLowerCase();
-            const filtered = allQRCodes.filter(qr => 
-                qr.qrCodeId.toLowerCase().includes(search) ||
-                (qr.batchNumber && qr.batchNumber.toLowerCase().includes(search))
-            );
-            displayQRCodes(filtered);
+            try {
+                const search = document.getElementById('qrSearch').value.toLowerCase();
+                const filtered = allQRCodes.filter(qr => {
+                    if (!qr) return false;
+                    const qrCodeId = (qr.qrCodeId || '').toLowerCase();
+                    const batchNumber = (qr.batchNumber || '').toLowerCase();
+                    return qrCodeId.includes(search) || batchNumber.includes(search);
+                });
+                displayQRCodes(filtered);
+            } catch (error) {
+                console.error('Error filtering QR codes:', error);
+                displayQRCodes(allQRCodes);
+            }
         }
 
         // Tab Navigation
