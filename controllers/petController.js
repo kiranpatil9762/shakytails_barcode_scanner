@@ -73,7 +73,7 @@ exports.createPet = async (req, res) => {
       allergies,
       emergencyContacts: emergencyContacts || [],
       rewardNote,
-      profileImage: req.file ? `/uploads/${req.file.filename}` : null,
+      profileImage: req.file ? req.file.path : null,
     });
 
     // If using inventory QR code, mark it as assigned
@@ -134,7 +134,7 @@ exports.updatePet = async (req, res) => {
     delete updateData._id;
     
     if (req.file) {
-      updateData.profileImage = `/uploads/${req.file.filename}`;
+      updateData.profileImage = req.file.path;
     }
 
     pet = await Pet.findByIdAndUpdate(req.params.id, updateData, {

@@ -1,24 +1,23 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, '../public/uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'demo',
+  api_key: process.env.CLOUDINARY_API_KEY || 'demo',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'demo'
+});
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-  },
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'shakytails',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+    transformation: [{ width: 1000, height: 1000, crop: 'limit' }]
+  }
 });
 
 // File filter - only allow images
@@ -74,18 +73,17 @@ const handleUploadError = (err, req, res, next) => {
 };
 
 /**
- * Delete file from uploads
- * @param {string} filename - Name of file to delete
+ * Delete file from Cloudinary
+ * @param {string} publicId - Cloudinary public_id of file to delete
  */
-const deleteFile = (filename) => {
+const deleteFile = async (publicId) => {
   try {
-    const filepath = path.join(uploadDir, filename);
-    if (fs.existsSync(filepath)) {
-      fs.unlinkSync(filepath);
-      console.log(`✅ File deleted: ${filename}`);
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId);
+      console.log(`✅ File deleted from Cloudinary: ${publicId}`);
     }
   } catch (error) {
-    console.error(`❌ Error deleting file: ${error.message}`);
+    console.error(`❌ Error deleting file from Cloudinary: ${error.message}`);
   }
 };
 
@@ -94,4 +92,5 @@ module.exports = {
   uploadMultiple,
   handleUploadError,
   deleteFile,
+  cloudinary
 };
