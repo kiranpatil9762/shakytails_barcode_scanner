@@ -55,6 +55,20 @@
             animation: fadeInDown 0.8s ease-out;
         }
 
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            display: block;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -370,6 +384,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <img src="/logo.png" alt="ShakyTails Logo" class="logo" onerror="this.style.display='none'">
             <h1>🐾 ShakyTails</h1>
             <p>Premium Pet ID System</p>
         </div>
