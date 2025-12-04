@@ -25,6 +25,7 @@ app.use(helmet({
         "https://cdnjs.cloudflare.com"
       ],
       scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       imgSrc: [
         "'self'", 
         "data:", 
