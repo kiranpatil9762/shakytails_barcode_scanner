@@ -1015,7 +1015,8 @@
             document.getElementById('petProfileCard').classList.remove('hidden');
             
             if (pet.profileImage) {
-                document.getElementById('petImage').src = `${API_BASE}${pet.profileImage}`;
+                // Check if URL is already complete (Cloudinary) or needs base URL (local)
+                document.getElementById('petImage').src = pet.profileImage.startsWith('http') ? pet.profileImage : `${API_BASE}${pet.profileImage}`;
             }
             
             document.getElementById('petNameDisplay').textContent = pet.petName;
@@ -1188,7 +1189,8 @@
                     // Show current image
                     const currentImage = document.getElementById('currentPetImage');
                     if (data.pet.profileImage) {
-                        currentImage.src = `${API_BASE}${data.pet.profileImage}`;
+                        // Check if URL is already complete (Cloudinary) or needs base URL (local)
+                        currentImage.src = data.pet.profileImage.startsWith('http') ? data.pet.profileImage : `${API_BASE}${data.pet.profileImage}`;
                     } else {
                         currentImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%23667eea' width='150' height='150'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='white'%3E🐾%3C/text%3E%3C/svg%3E";
                     }
